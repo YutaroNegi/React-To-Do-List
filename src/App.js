@@ -8,7 +8,14 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [items, setItems] = useState([])
-  const [text, setText] = useState('')
+
+  function addItem(text){
+    if(text === '') return
+
+    let item = new Item(text)
+
+    setItems([...items, item])
+}
 
   useEffect(()=>{
     let savedItems = JSON.parse(localStorage.getItem('savedItems'))
@@ -24,24 +31,6 @@ function App() {
     localStorage.setItem('savedItems', JSON.stringify(items));
   }, [items])
 
-  function handleTextChange(e){
-      setText(e.target.value)
-  }
-
-  function hadleAddClick(){
-      if(text === '') return
-
-      let item = new Item(text)
-
-      setItems([...items, item])
-      setText('')
-  }
-
-  function handleEnter(e){
-    if(e.keyCode === 13) {
-      hadleAddClick()
-    }
-  }
 
   function handleDeleteClick(id){
       let filteredItems = items.filter(item => item.id !== id)
@@ -62,7 +51,7 @@ function App() {
   return (
     <div>
         <Header></Header>
-        <InputContainer hadleAddClick={hadleAddClick} handleTextChange={handleTextChange} handleEnter={handleEnter} text={text}></InputContainer>
+        <InputContainer addItem={addItem}></InputContainer>
         <ListContainer items={items} handleChangeDone={handleChangeDone} handleDeleteClick={handleDeleteClick}></ListContainer>
     </div>
   );
