@@ -1,58 +1,44 @@
 import './App.css';
-import Item from './components/Item'
 import Header from './components/Header';
 import InputContainer from './components/InputContainer';
 import ListContainer from './components/ListContainer';
 
 import { useEffect, useState } from 'react';
 
+import { createStore } from 'redux'
+import { Provider, useDispatch } from 'react-redux'
+import listReducer from './reducer/listReducer';
+
 function App() {
-  const [items, setItems] = useState([])
+  function setState(state){
+    localStorage.setItem('savedItems', JSON.stringify(state));
+  }
 
-  function addItem(text){
-    if(text === '') return
-
-    let item = new Item(text)
-
-    setItems([...items, item])
-}
-
-  useEffect(()=>{
+  function loadState(){
     let savedItems = JSON.parse(localStorage.getItem('savedItems'))
 
-    if(!savedItems) return
+    if(!savedItems) return []
 
-    if(savedItems.length === 0) return
-    
-    setItems(savedItems)
-  }, [])
+    if(savedItems.length === 0) return []
 
-  useEffect(()=>{
-    localStorage.setItem('savedItems', JSON.stringify(items));
-  }, [items])
-
-
-  function handleDeleteClick(id){
-      let filteredItems = items.filter(item => item.id !== id)
-
-      setItems(filteredItems)
+    return savedItems
   }
 
-  function handleChangeDone(id){
-      let changedItems = items.map(item =>{
-        if(item.id === id){
-          item.done = !item.done
-        }
-        return item
-      })
-      setItems(changedItems)
-  }
+  const store = createStore(listReducer, loadState())
+
+  store.subscribe(()=>{
+    setState(store.getState())
+  })
+
 
   return (
     <div>
         <Header></Header>
-        <InputContainer addItem={addItem}></InputContainer>
-        <ListContainer items={items} handleChangeDone={handleChangeDone} handleDeleteClick={handleDeleteClick}></ListContainer>
+        <Provider store={store}>
+          <InputContainer></InputContainer>
+          <ListContainer></ListContainer>
+        </Provider>
+
     </div>
   );
 }

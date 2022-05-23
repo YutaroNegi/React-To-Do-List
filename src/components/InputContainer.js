@@ -2,9 +2,12 @@ import React from "react";
 import { Input } from 'semantic-ui-react'
 import { Button } from 'semantic-ui-react'
 import { useState } from 'react';
+import { addItem } from '../actions/listAction'
+import { useDispatch } from "react-redux";
 
 function InputContainer(props){
     const [text, setText] = useState('')
+    const dispatch = useDispatch()
 
     function handleTextChange(e){
         setText(e.target.value)
@@ -12,14 +15,12 @@ function InputContainer(props){
 
     function handleEnter(e){
       if(e.keyCode === 13) {
-        props.addItem(text)
-
-        setText('')
+        handleAddClick()
       }
     }
 
     function handleAddClick(){
-        props.addItem(text)
+        dispatch(addItem(text))
         setText('')
     }
 
