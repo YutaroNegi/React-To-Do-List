@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Radio } from 'semantic-ui-react'
 import { List } from 'semantic-ui-react'
-import { deleteItem, doneItem} from '../actions/listAction'
+import { deleteItem, doneItem} from '../reducer/listReducer'
 
 function ListItem(props){
     const dispatch = useDispatch()

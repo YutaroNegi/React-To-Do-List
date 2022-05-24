@@ -4,7 +4,7 @@ import { List, Segment } from 'semantic-ui-react'
 import ListItem from './ListItem'
 
 function ListContainer(props){
-    const items = useSelector(state => state)
+    const items = useSelector(state => state.list.value)
     return(
         <Segment inverted className='items-box bg-dark white-txt'>
         <List divided inverted relaxed>

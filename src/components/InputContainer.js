@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from 'semantic-ui-react'
 import { Button } from 'semantic-ui-react'
 import { useState } from 'react';
-import { addItem } from '../actions/listAction'
+import { addItem } from '../reducer/listReducer'
 import { useDispatch } from "react-redux";
 
 function InputContainer(props){

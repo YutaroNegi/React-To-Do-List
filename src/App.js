@@ -3,11 +3,8 @@ import Header from './components/Header';
 import InputContainer from './components/InputContainer';
 import ListContainer from './components/ListContainer';
 
-import { useEffect, useState } from 'react';
-
-import { createStore } from 'redux'
-import { Provider, useDispatch } from 'react-redux'
-import listReducer from './reducer/listReducer';
+import store from './store'
+import { Provider } from 'react-redux'
 
 function App() {
   function setState(state){
@@ -24,12 +21,10 @@ function App() {
     return savedItems
   }
 
-  const store = createStore(listReducer, loadState())
-
   store.subscribe(()=>{
-    setState(store.getState())
+      setState(store.getState)
   })
-
+  console.log(store);
 
   return (
     <div>

@@ -1,21 +1,35 @@
+import { createSlice } from '@reduxjs/toolkit'
+import Item from '../components/Item'
 
-export default(state = [], action) =>{
-    switch(action.type){
-        case 'ADD_ITEM': 
-            return [...state, action.payload]
+export const listSlice = createSlice({
+  name: 'list',
+  initialState: {
+    value: [],
+  },
+  reducers: {
+    addItem: (state, action) => {
+        let item = new Item(action.payload)
+        state.value = [...state.value, item]
 
-        case 'DELETE_ITEM': 
-            return state.filter(item=> item.id !== action.payload)
+    },
+    deleteItem: (state, action) => {
+        state.value = state.value.filter(item=> item.id !== action.payload)
+    },
+    doneItem: (state, action) => {
+        state.value = state.value.map(item=>{
+            if(item.id === action.payload){
+                item.done = !item.done
+            }
 
-        case 'DONE_ITEM': 
-            return state.map(item=>{
-                if(item.id === action.payload){
-                    item.done = !item.done
-                }
+            return item
+        })
+    },
+  },
+})
 
-                return item
-            })
+// Action creators are generated for each case reducer function
+export const { addItem, deleteItem, doneItem } = listSlice.actions
 
-        default: return state
-    }
-}
+export default listSlice.reducer
+
+
